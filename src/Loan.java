@@ -1,6 +1,9 @@
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvDate;
@@ -8,6 +11,10 @@ import com.opencsv.bean.CsvDate;
 /**
  * Loan class storing a LoanId, LoanAmount, ProductType, Term and Completed Date.
  * As well as whether a loan has been given and which investors have funded the loan
+ * Binds CSV Columns to Variable Names using OpenCSV
+ * 
+ * Compares Loans by Date (Oldest to Newest)
+ * 
  * @author Nikita Vorontsov
  *
  */
@@ -87,5 +94,25 @@ public class Loan implements Comparable<Loan>{
 	
 	public void addInvestor(Investor i, long amount) {
 		investors.put(i, amount);
+	}
+	
+	public JSONObject getJSON() {
+		JSONObject json = new JSONObject();
+		if(loanGiven) {
+			 try {
+				json.put("loanId", getLoanId());
+				JSONArray investorsArray = new JSONArray();
+				for(Investor i : getInvestorList().keySet()) {
+					JSONObject investorObject = new JSONObject();
+					investorObject.put("investorName", i.getName());
+					investorObject.put("investmentAmount", getInvestorList().get(i));
+					investorsArray.put(investorObject);
+				}
+				json.put("investors", investorsArray);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return json;
 	}
 }

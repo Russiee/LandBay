@@ -2,6 +2,14 @@ import java.util.HashMap;
 
 import com.opencsv.bean.CsvBindByName;
 
+/**
+ * Investor class storing an Investor, InvestmentAmount, ProductType, Term Length
+ * as well as a HashMap storing the Loans invested in by the investor, together with the Loan Amount
+ * Binds CSV Columns to Variable Names using OpenCSV
+ * 
+ * @author Nikita Vorontsov
+ *
+ */
 public class Investor{
 
 	@CsvBindByName

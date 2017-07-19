@@ -3,6 +3,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class to sort investors and loans via Product Types
+ * If Investor product type matches Loan product type
+ * Then Investor added to List of investors for specified Loan
+ * 
+ * Can be altered depending on updated ruleset
+ * 
+ * @author Nikita Vorontsov
+ *
+ */
 public class ProductTypeSplitter {
 
 	HashMap<Loan, List<Investor>> investmentMap;

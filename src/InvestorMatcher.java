@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * @author Nikita Vorontsov
  *
  */
-public class InvestorFirstSorter {
+public class InvestorMatcher {
 
 	//HashMap that contains Loans as keys, with a List of Investors matching specified Rules as Values
 	HashMap<Loan, List<Investor>> investmentMap;
@@ -21,12 +21,15 @@ public class InvestorFirstSorter {
 	//But not sure whether the sum of investors meets the requested loan
 	HashMap<Investor, Long> temporaryInvestors;
 	
-	public InvestorFirstSorter(HashMap<Loan, List<Investor>> investmentMap) {
+	public static final int FIT_RICHEST_INVESTOR_FIRST = 0;
+	public static final int FIT_MOST_INVESTORS_FIRST = 1;
+	
+	public InvestorMatcher(HashMap<Loan, List<Investor>> investmentMap, int sortingOrder) {
 		this.investmentMap = investmentMap;
-		sortInvestors();
+		sortInvestors(sortingOrder);
 	}
 	
-	private void sortInvestors() {
+	private void sortInvestors(int sortingOrder) {
 		
 		//Sort the list of Loans by Completed Date (Oldest -> Newest)
 		List<Loan> loanList = investmentMap.keySet().stream().sorted().collect(Collectors.toList());
@@ -34,16 +37,17 @@ public class InvestorFirstSorter {
 		for(Loan l : loanList) {
 			List<Investor> investorList = investmentMap.get(l); //List of Investors that are eligible to invest in Loan l after rules have been applied
 			
-			//Sorts Investors by Most Amount of Funds available to invest first
-			Comparator<Investor> comparator = Comparator.comparingLong(Investor::getInvestmentAmount).reversed();
-			investorList = investorList.stream().sorted(comparator).collect(Collectors.toList());
+			//Sorts Investors by the chosen Sorting Style
+			investorList = sortInvestors(investorList, sortingOrder);
 			
 			temporaryInvestors = new HashMap<>();
 			long originalLoan = l.getLoanAmount();
 			
 			for(Investor i : investorList) {
-				
-				if(i.getInvestmentAmount() >= l.getLoanAmount()) {		//If the invester has more (or equal) number of funds than the loan is requesting
+				if(i.getInvestmentAmount() == 0) {
+					continue;
+				}
+				if(i.getInvestmentAmount() >= l.getLoanAmount()) {		//If the investor has more (or equal) number of funds than the loan is requesting
 					i.setInvestmentAmount(i.getInvestmentAmount() - l.getLoanAmount()); 	//Change the remaining amount of funds available to invest
 					l.addInvestor(i, l.getLoanAmount()); 	//Add the investor to the given Loan, as well as the amount invested
 					i.setInvestments(l, l.getLoanAmount());	 //Add the loan to the given investor
@@ -54,15 +58,14 @@ public class InvestorFirstSorter {
 					temporaryInvestors.put(i, i.getInvestmentAmount());		//Place the current investor and amount invested into temporary storage
 					i.setInvestments(l, i.getInvestmentAmount());
 					l.addInvestor(i, i.getInvestmentAmount());
+					long remainingInvestment = i.getInvestmentAmount() - l.getLoanAmount();
 					l.setLoanAmount(l.getLoanAmount() - i.getInvestmentAmount());
-					long remainingInvestment = l.getLoanAmount() - i.getInvestmentAmount();
-					
 					if(remainingInvestment > 0) {	//If the investor has funds left after investing
 						i.setInvestmentAmount(remainingInvestment);
 					} else {
 						i.setInvestmentAmount(0);
 					}
-				
+					
 				}
 			}
 			//If after all eligible investors have been accounted for, and the loan hasn't been matched
@@ -102,5 +105,15 @@ public class InvestorFirstSorter {
 				i.getInvestmentsMap().remove(l);
 			}
 		}
+	}
+	
+	private List<Investor> sortInvestors(List<Investor> investorList, int sortOrder) {
+		Comparator<Investor> comparator = null;
+		if(sortOrder == FIT_RICHEST_INVESTOR_FIRST) {
+			comparator = Comparator.comparingLong(Investor::getInvestmentAmount).reversed();
+		} else if(sortOrder == FIT_MOST_INVESTORS_FIRST) {
+			comparator = Comparator.comparingLong(Investor::getInvestmentAmount);
+		}
+		return investorList.stream().sorted(comparator).collect(Collectors.toList());
 	}
 }

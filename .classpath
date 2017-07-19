@@ -5,9 +5,9 @@
 	<classpathentry kind="lib" path="C:/Users/Nikita Vorontsov/Downloads/opencsv-3.10.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Nikita Vorontsov/Downloads/commons-lang3-3.6-bin/commons-lang3-3.6/commons-lang3-3.6.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Nikita Vorontsov/Downloads/commons-beanutils-1.9.3-bin/commons-beanutils-1.9.3/commons-beanutils-1.9.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nikita Vorontsov/Downloads/commons-lang3-3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nikita Vorontsov/Downloads/commons-collections4-4.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Nikita Vorontsov/Downloads/commons-collections-3.2.2-bin/commons-collections-3.2.2/commons-collections-3.2.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Nikita Vorontsov/Downloads/commons-logging-1.2-bin/commons-logging-1.2/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Nikita Vorontsov/Downloads/java-json.jar/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Nikita Vorontsov/Downloads/gson-2.8.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

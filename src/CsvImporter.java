@@ -6,6 +6,15 @@ import java.util.List;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 
+/**
+ * Import data from CSV file using OpenCSV
+ * Creates List of Loan and Investor Classes (respectively) and populates using data from CSV file
+ * 
+ * Initialises HashMap mapping Loans to Eligible Investors (Once rules are applied)
+ * 
+ * @author Nikita Vorontsov
+ *
+ */
 public class CsvImporter {
 
 	List<Loan> loansList;
